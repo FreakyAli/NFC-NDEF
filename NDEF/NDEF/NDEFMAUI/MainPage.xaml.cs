@@ -8,5 +8,3 @@ public partial class MainPage : ContentPage
     }
     //SemanticScreenReader.Announce();
 }
-
-

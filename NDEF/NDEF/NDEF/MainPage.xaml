@@ -4,7 +4,7 @@
              Title="Messenger" 
              x:Class="NDEF.MainPage">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="Center">
+        <VerticalStackLayout VerticalOptions="Center">
             <StackLayout
                 Margin="10"
                 Padding="1"
@@ -20,7 +20,7 @@
                     BackgroundColor="Blue"
                     TextColor="White"
                     Text="Send Text"/>
-        </StackLayout>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>
 
