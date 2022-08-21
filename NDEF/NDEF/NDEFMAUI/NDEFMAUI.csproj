@@ -45,4 +45,29 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="Interfaces\" />
+	  <None Remove="Views\" />
+	  <None Remove="ViewModels\" />
+	  <None Remove="Helpers\" />
+	  <None Remove="Platforms\Android\Services\" />
+	  <None Remove="Platforms\iOS\Services\" />
+	  <None Remove="Platforms\MacCatalyst\" />
+	  <None Remove="Platforms\Android\Resources\xml\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Interfaces\" />
+	  <Folder Include="Views\" />
+	  <Folder Include="ViewModels\" />
+	  <Folder Include="Helpers\" />
+	  <Folder Include="Platforms\Android\Services\" />
+	  <Folder Include="Platforms\iOS\Services\" />
+	  <Folder Include="Platforms\MacCatalyst\" />
+	  <Folder Include="Platforms\Android\Resources\xml\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Platforms\Windows\App.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	</ItemGroup>
 </Project>
