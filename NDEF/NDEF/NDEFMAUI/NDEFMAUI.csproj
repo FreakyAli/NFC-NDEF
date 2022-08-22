@@ -46,7 +46,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Interfaces\" />
 	  <None Remove="Views\" />
 	  <None Remove="ViewModels\" />
 	  <None Remove="Helpers\" />
@@ -54,16 +53,19 @@
 	  <None Remove="Platforms\iOS\Services\" />
 	  <None Remove="Platforms\MacCatalyst\" />
 	  <None Remove="Platforms\Android\Resources\xml\" />
+	  <None Remove="Platforms\iOS\Partials\" />
+	  <None Remove="Enums\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Interfaces\" />
 	  <Folder Include="Views\" />
 	  <Folder Include="ViewModels\" />
 	  <Folder Include="Helpers\" />
-	  <Folder Include="Platforms\Android\Services\" />
+	  <Folder Include="Platforms\Android\Partials\" />
 	  <Folder Include="Platforms\iOS\Services\" />
 	  <Folder Include="Platforms\MacCatalyst\" />
 	  <Folder Include="Platforms\Android\Resources\xml\" />
+	  <Folder Include="Platforms\iOS\Partials\" />
+	  <Folder Include="Enums\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiXaml Update="Platforms\Windows\App.xaml">

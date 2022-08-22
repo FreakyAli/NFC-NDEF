@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NDEFMAUI.MainPage">
  <ContentPage.Content>
-        <StackLayout VerticalOptions="Center">
+        <VerticalStackLayout VerticalOptions="Center">
             <StackLayout
                 Margin="10"
                 Padding="1"
@@ -19,7 +19,7 @@
                     BackgroundColor="Blue"
                     TextColor="White"
                     Text="Send Text"/>
-        </StackLayout>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>
 
