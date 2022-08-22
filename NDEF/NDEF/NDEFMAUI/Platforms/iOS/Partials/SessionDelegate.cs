@@ -3,17 +3,11 @@ using System.Text;
 using CoreNFC;
 using Foundation;
 using Microsoft.VisualBasic;
+using NDEFMAUI.Enums;
 using UIKit;
 
 namespace NDEFMAUI.Partials
 {
-    public enum NfcTransmissionStatus
-    {
-        Unknown,
-        Failed,
-        Success
-    }
-
     public class SessionDelegate : NFCNdefReaderSessionDelegate
     {
         private readonly byte[] bytes;

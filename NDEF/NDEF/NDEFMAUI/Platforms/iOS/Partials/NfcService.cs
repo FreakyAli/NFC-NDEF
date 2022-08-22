@@ -14,6 +14,7 @@ namespace NDEFMAUI.Partials
         {
         }
 
+        #region Unused methods
         public partial void ConfigureNfcAdapter()
         {
 
@@ -34,6 +35,8 @@ namespace NDEFMAUI.Partials
 
         }
 
+        #endregion
+
         public async partial Task SendAsync(byte[] bytes)
         {
             var isNfcAvailable = UIDevice.CurrentDevice.CheckSystemVersion(11, 0);
@@ -43,7 +46,6 @@ namespace NDEFMAUI.Partials
                 {
                     try
                     {
-
                         var sessionDelegate = new SessionDelegate(bytes);
                         var session = new NFCNdefReaderSession(sessionDelegate, null, true);
                         session.BeginSession();
