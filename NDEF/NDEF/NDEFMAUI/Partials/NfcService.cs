@@ -1,28 +1,20 @@
 ﻿using System;
 
-namespace NDEFMAUI.Interfaces
+namespace NDEFMAUI.Partials
 {
     public partial class NfcService
     {
-        partial void ConfigureNfcAdapter() { }
+        public partial void ConfigureNfcAdapter();
 
-        partial void EnableForegroundDispatch()
-        {
-        }
+        public partial void EnableForegroundDispatch();
 
-        partial void DisableForegroundDispatch()
-        {
-        }
+        public partial void DisableForegroundDispatch();
 
-        partial void UnconfigureNfcAdapter()
-        {
-        }
+        public partial void UnconfigureNfcAdapter();
 
-        partial Task SendAsync(List<byte[]> bytes, int delay);
+        public partial Task SendAsync(byte[] bytes);
 
-        partial Task TestNfcAsync();
-
-        partial Task<bool> OpenNFCSettingsAsync();
+        public partial Task<bool> OpenNFCSettingsAsync();
     }
 }
 

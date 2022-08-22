@@ -17,16 +17,16 @@ namespace NDEFMAUI.Partials
     {
         private readonly MainActivity mainActivity = (MainActivity)Platform.CurrentActivity;
         private Lazy<NfcAdapter> lazynfcAdapter = new Lazy<NfcAdapter>(() => NfcAdapter.GetDefaultAdapter(Platform.CurrentActivity));
-
         private NfcAdapter NfcAdapter => lazynfcAdapter.Value;
         private PendingIntent pendingIntent;
         private IntentFilter[] writeTagFilters;
         private string[][] techList;
         private ReaderCallback readerCallback;
-        public static Tag DetectedTag { get; set; }
+        private NfcStatus NfcStatus => NfcAdapter == null ? NfcStatus.Unavailable : NfcAdapter.IsEnabled ?
+                                      NfcStatus.Enabled : NfcStatus.Disabled;
 
-        private NfcStatus NfcStatus => NfcAdapter == null ? NfcStatus.Unavailable :
-                                                            NfcAdapter.IsEnabled ? NfcStatus.Enabled : NfcStatus.Disabled;
+        public static Tag DetectedTag { get; set; }
+       
         public NfcService()
         {
             Platform.ActivityStateChanged += Platform_ActivityStateChanged;
@@ -100,12 +100,6 @@ namespace NDEFMAUI.Partials
             {
                 if (null == DetectedTag)
                     DetectedTag = await GetDetectedTag();
-                else
-                    loggerService.TrackMessage("SendAsync", "Tag has beed already detected");
-
-
-
-                dialogTextView.Text = Strings.NfcPage_TagDetected;
 
                 ndef = Ndef.Get(DetectedTag);
                 if (ndef == null)
@@ -113,30 +107,24 @@ namespace NDEFMAUI.Partials
 
                 if (!ndef.IsWritable)
                 {
-                    loggerService.TrackMessage(LoggingConstants.NFCNonWriteable);
-
-                    await alertService.DisplayAlertAsync(Strings.Global_Error, Strings.NfcPage_TagIsReadonly);
+                    await Application.Current.MainPage.DisplayAlert("Error", "Tag is readonly", "Ok");
                     return;
                 }
 
                 if (!ndef.IsConnected)
                 {
-                    loggerService.TrackMessage(LoggingConstants.NFCTagConnectingBegin);
-
                     await ndef.ConnectAsync();
-
-                    loggerService.TrackMessage(LoggingConstants.NFCTagConnected);
                 }
 
-                await WriteToTag(ndef, chunkedBytes, delay);
+                await WriteToTag(ndef, bytes);
             }
             catch (IOException)
             {
-                await alertService.DisplayAlertAsync(Strings.Global_Error, Strings.NfcPage_TransmissionError);
+                await Application.Current.MainPage.DisplayAlert("Error", "There was an error while transmission of data, this could be caused because the device was moved away from the tag", "Ok");
             }
             catch (Exception)
             {
-                await alertService.DisplayAlertAsync(Strings.Global_Error, Strings.Error_Message);
+                await Application.Current.MainPage.DisplayAlert("Error", "There was an error while making this request", "Ok");
             }
             finally
             {
@@ -156,15 +144,13 @@ namespace NDEFMAUI.Partials
             return await tagDetectionTask;
         }
 
-        private async Task WriteToTag(Ndef ndef, byte[] chunkedBytes, int delay)
+        private async Task WriteToTag(Ndef ndef, byte[] chunkedBytes)
         {
 
-
-            var ndefRecord = new NdefRecord(NdefRecord.TnfWellKnown, NdefRecord.RtdText?.ToArray(), new byte[0], chunk);
+            var ndefRecord = new NdefRecord(NdefRecord.TnfWellKnown, NdefRecord.RtdText?.ToArray(), Array.Empty<byte>(), chunkedBytes);
             NdefRecord[] records = { ndefRecord };
             NdefMessage message = new NdefMessage(records);
             ndef.WriteNdefMessage(message);
-            await Task.Delay(delay);
             await Application.Current.MainPage.DisplayAlert("NFC", "Write Successful", "Ok");
         }
 

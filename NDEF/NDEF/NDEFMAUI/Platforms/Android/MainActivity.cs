@@ -31,7 +31,7 @@ public class MainActivity : MauiAppCompatActivity
             {
                 var isSuccess = NfcTag?.TrySetResult(tag);
                 if (null == NfcTag || !isSuccess.Value) { }
-                    //NativeNFCAdapterService.DetectedTag = tag;
+                 NDEFMAUI.Partials.NfcService.DetectedTag = tag;
             }
         }
     }
