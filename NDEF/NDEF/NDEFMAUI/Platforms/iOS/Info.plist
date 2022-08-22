@@ -28,5 +28,9 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+
+	<key>NFCReaderUsageDescription</key>
+	<string>This application wants to access NFC</string>
+
 </dict>
 </plist>
