@@ -22,11 +22,12 @@ namespace NDEFMAUI.Partials
         private IntentFilter[] writeTagFilters;
         private string[][] techList;
         private ReaderCallback readerCallback;
-        private NfcStatus NfcStatus => NfcAdapter == null ? NfcStatus.Unavailable : NfcAdapter.IsEnabled ?
+        private NfcStatus NfcStatus => NfcAdapter == null ?
+                                      NfcStatus.Unavailable : NfcAdapter.IsEnabled ?
                                       NfcStatus.Enabled : NfcStatus.Disabled;
 
         public static Tag DetectedTag { get; set; }
-       
+
         public NfcService()
         {
             Platform.ActivityStateChanged += Platform_ActivityStateChanged;
@@ -75,17 +76,14 @@ namespace NDEFMAUI.Partials
 
         public partial void DisableForegroundDispatch()
         {
-            NfcAdapter?.DisableForegroundDispatch(Platform.CurrentActivity);
-            NfcAdapter?.DisableReaderMode(Platform.CurrentActivity);
+            NfcAdapter?.DisableForegroundDispatch(Platform.CurrentActivity); //Foreground dispatch API disabled
+            NfcAdapter?.DisableReaderMode(Platform.CurrentActivity); //Reader mode API disabled
         }
 
         public partial void EnableForegroundDispatch()
         {
-            NfcAdapter?.EnableForegroundDispatch(Platform.CurrentActivity, pendingIntent, writeTagFilters, techList);
-            Task.Delay(10000);
-
-            if (null == DetectedTag)
-                NfcAdapter?.EnableReaderMode(Platform.CurrentActivity, readerCallback, NfcReaderFlags.NfcA, null);
+            NfcAdapter?.EnableForegroundDispatch(Platform.CurrentActivity, pendingIntent, writeTagFilters, techList); //Foreground dispatch API enabled
+            NfcAdapter?.EnableReaderMode(Platform.CurrentActivity, readerCallback, NfcReaderFlags.NfcA, null); //Reader mode API enabled
         }
 
         public partial void UnconfigureNfcAdapter()
@@ -146,7 +144,6 @@ namespace NDEFMAUI.Partials
 
         private async Task WriteToTag(Ndef ndef, byte[] chunkedBytes)
         {
-
             var ndefRecord = new NdefRecord(NdefRecord.TnfWellKnown, NdefRecord.RtdText?.ToArray(), Array.Empty<byte>(), chunkedBytes);
             NdefRecord[] records = { ndefRecord };
             NdefMessage message = new NdefMessage(records);
