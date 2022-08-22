@@ -1,42 +1,42 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CoreNFC;
-using Microsoft.Maui.Controls.PlatformConfiguration;
-using NDEFMAUI.Enums;
+using NDEF.iOS.Enums;
 using UIKit;
+using Xamarin.Essentials;
 
-namespace NDEFMAUI.Partials
+namespace NDEF.iOS.Serviices
 {
-    public partial class NfcService
+    public class NativeNFCAdapterService
     {
-
-        public NfcService()
+        public NativeNFCAdapterService()
         {
         }
 
         #region Unused methods
-        public partial void ConfigureNfcAdapter()
+        public void ConfigureNfcAdapter()
         {
 
         }
 
-        public partial void EnableForegroundDispatch()
+        public void EnableForegroundDispatch()
         {
 
         }
 
-        public partial void DisableForegroundDispatch()
+        public void DisableForegroundDispatch()
         {
 
         }
 
-        public partial void UnconfigureNfcAdapter()
+        public void UnconfigureNfcAdapter()
         {
 
         }
 
         #endregion
 
-        public async partial Task SendAsync(byte[] bytes)
+        public async Task SendAsync(byte[] bytes)
         {
             var isNfcAvailable = UIDevice.CurrentDevice.CheckSystemVersion(11, 0);
             if (isNfcAvailable && NFCNdefReaderSession.ReadingAvailable)
@@ -52,24 +52,24 @@ namespace NDEFMAUI.Partials
                         var status = await sessionDelegate.WasDataTransmitted.Task;
                         if (status != NfcTransmissionStatus.Success)
                         {
-                            await Application.Current.MainPage.DisplayAlert("Error", "Suitable error message", "Ok");
+                            await Xamarin.Forms.Application.Current.MainPage.DisplayAlert("Error", "Suitable error message", "Ok");
                         }
 
                     }
                     catch (Exception ex)
                     {
-                        await Application.Current.MainPage.DisplayAlert("Error", "There was an error while trying to create a NFC session", "Ok");
+                        await Xamarin.Forms.Application.Current.MainPage.DisplayAlert("Error", "There was an error while trying to create a NFC session", "Ok");
                     }
                 });
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Read is not supported by this tag", "Ok");
+                await Xamarin.Forms.Application.Current.MainPage.DisplayAlert("Error", "Read is not supported by this tag", "Ok");
             }
         }
 
-        public partial Task<bool> OpenNFCSettingsAsync() => Task.FromResult(true);
+        public Task<bool> OpenNFCSettingsAsync() => Task.FromResult(true);
     }
-
 }
+
 
