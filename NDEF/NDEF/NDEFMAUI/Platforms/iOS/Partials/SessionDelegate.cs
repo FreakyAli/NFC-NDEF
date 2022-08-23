@@ -6,7 +6,7 @@ using Microsoft.VisualBasic;
 using NDEFMAUI.Enums;
 using UIKit;
 
-namespace NDEFMAUI.Partials
+namespace NDEFMAUI
 {
     public class SessionDelegate : NFCNdefReaderSessionDelegate
     {

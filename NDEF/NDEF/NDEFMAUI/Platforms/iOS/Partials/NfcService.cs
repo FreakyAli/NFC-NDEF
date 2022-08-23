@@ -1,37 +1,27 @@
 ﻿using System;
-using CoreNFC;
-using Microsoft.Maui.Controls.PlatformConfiguration;
+using System.Diagnostics;
 using NDEFMAUI.Enums;
-using UIKit;
 
 namespace NDEFMAUI.Partials
 {
     public partial class NfcService
     {
 
-        public NfcService()
-        {
-        }
-
         #region Unused methods
         public partial void ConfigureNfcAdapter()
         {
-
         }
 
         public partial void EnableForegroundDispatch()
         {
-
         }
 
         public partial void DisableForegroundDispatch()
         {
-
         }
 
         public partial void UnconfigureNfcAdapter()
         {
-
         }
 
         #endregion
@@ -72,4 +62,5 @@ namespace NDEFMAUI.Partials
     }
 
 }
+
 

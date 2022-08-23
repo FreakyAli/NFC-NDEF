@@ -1,8 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<page:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:page="clr-namespace:NDEFMAUI.Views"
+             xmlns:vm="clr-namespace:NDEFMAUI.ViewModels"
+             x:DataType="vm:MainViewModel"
+             Title="Messenger"
              x:Class="NDEFMAUI.MainPage">
- <ContentPage.Content>
+    <ContentPage.Content>
         <VerticalStackLayout VerticalOptions="Center">
             <StackLayout
                 Margin="10"
@@ -21,5 +25,5 @@
                     Text="Send Text"/>
         </VerticalStackLayout>
     </ContentPage.Content>
-</ContentPage>
+</page:BaseContentPage>
 
