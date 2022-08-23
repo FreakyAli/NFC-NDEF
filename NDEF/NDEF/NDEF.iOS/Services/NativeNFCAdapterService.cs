@@ -8,7 +8,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(NativeNFCAdapterService))]
-namespace NDEF.iOS.Serviices
+namespace NDEF.iOS.Services
 {
     public class NativeNFCAdapterService
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CoreNFC;
@@ -7,7 +8,7 @@ using NDEF.iOS.Enums;
 using UIKit;
 using Xamarin.Essentials;
 
-namespace NDEF.iOS.Serviices
+namespace NDEF.iOS.Services
 {
     public class SessionDelegate : NFCNdefReaderSessionDelegate
     {
