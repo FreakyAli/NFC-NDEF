@@ -7,22 +7,34 @@ namespace NDEF.MAUI.Interfaces
         /// <summary>
         /// Configuration for NFC service 
         /// </summary>
-        public void ConfigureNfcAdapter();
+        public void ConfigureNfcAdapter()
+        {
+
+        }
 
         /// <summary>
         /// Enable NFC search
         /// </summary>
-        public void EnableForegroundDispatch();
+        public void EnableForegroundDispatch()
+        {
+
+        }
 
         /// <summary>
         /// Disable NFC search
         /// </summary>
-        public void DisableForegroundDispatch();
+        public void DisableForegroundDispatch()
+        {
+
+        }
 
         /// <summary>
         /// Unconfigure NFC services
         /// </summary>
-        public void UnconfigureNfcAdapter();
+        public void UnconfigureNfcAdapter()
+        {
+
+        }
 
         /// <summary>
         /// Send data over NFC 
@@ -35,7 +47,7 @@ namespace NDEF.MAUI.Interfaces
         /// Open NFC settings, This is only for Android.
         /// </summary>
         /// <returns></returns>
-        public Task<bool> OpenNFCSettingsAsync();
+        public Task<bool> OpenNFCSettingsAsync() => Task.FromResult(true);
     }
 }
 

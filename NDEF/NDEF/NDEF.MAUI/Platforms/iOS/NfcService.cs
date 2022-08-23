@@ -8,29 +8,6 @@ namespace NDEF.MAUI.Platforms
 {
     public class NfcService : INfcService
     {
-        #region Unused methods
-        public void ConfigureNfcAdapter()
-        {
-
-        }
-
-        public void EnableForegroundDispatch()
-        {
-
-        }
-
-        public void DisableForegroundDispatch()
-        {
-
-        }
-
-        public void UnconfigureNfcAdapter()
-        {
-
-        }
-
-        #endregion
-
         public async Task SendAsync(byte[] bytes)
         {
             var isNfcAvailable = UIDevice.CurrentDevice.CheckSystemVersion(11, 0);
