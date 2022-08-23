@@ -105,7 +105,7 @@ namespace NDEF.MAUI
                         }
                     });
                 }
-                catch (Exception ex)
+                catch
                 {
                     session.InvalidateSession();
                     WasDataTransmitted.TrySetResult(NfcTransmissionStatus.Failed);

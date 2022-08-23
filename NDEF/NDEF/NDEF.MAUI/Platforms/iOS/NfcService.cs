@@ -51,7 +51,7 @@ namespace NDEF.MAUI.Platforms
                         }
 
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         await Application.Current.MainPage.DisplayAlert("Error", "There was an error while trying to create a NFC session", "Ok");
                     }

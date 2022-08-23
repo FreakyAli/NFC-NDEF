@@ -13,8 +13,6 @@ namespace NDEF.iOS.Services
     public class SessionDelegate : NFCNdefReaderSessionDelegate
     {
         private readonly byte[] bytes;
-        private readonly string WriteMessage;
-
         public TaskCompletionSource<NfcTransmissionStatus> WasDataTransmitted { get; set; }
 
         public SessionDelegate(byte[] bytes)
@@ -77,7 +75,6 @@ namespace NDEF.iOS.Services
                                 var isNfcWriteAvailable = UIDevice.CurrentDevice.CheckSystemVersion(13, 0);
                                 if (isNfcWriteAvailable)
                                 {
-                                    session.AlertMessage = WriteMessage;
                                     var chunkString = Encoding.UTF8.GetString(bytes);
                                     var textPayload = NFCNdefPayload.CreateWellKnownTypePayload(chunkString);
                                     var ndefpayloadArray = new NFCNdefPayload[] { textPayload };
@@ -111,7 +108,7 @@ namespace NDEF.iOS.Services
                         }
                     });
                 }
-                catch (Exception ex)
+                catch
                 {
                     session.InvalidateSession();
                     WasDataTransmitted.TrySetResult(NfcTransmissionStatus.Failed);

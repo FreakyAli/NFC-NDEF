@@ -59,7 +59,7 @@ namespace NDEF.iOS.Services
                         }
 
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         await Xamarin.Forms.Application.Current.MainPage.DisplayAlert("Error", "There was an error while trying to create a NFC session", "Ok");
                     }
