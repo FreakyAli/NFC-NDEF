@@ -39,8 +39,6 @@ namespace NDEF.MAUI.Platforms
                 await Application.Current.MainPage.DisplayAlert("Error", "Read is not supported by this tag", "Ok");
             }
         }
-
-        public Task<bool> OpenNFCSettingsAsync() => Task.FromResult(true);
     }
 }
 
