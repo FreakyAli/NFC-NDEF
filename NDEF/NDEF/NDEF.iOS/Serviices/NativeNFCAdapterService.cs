@@ -2,9 +2,12 @@
 using System.Threading.Tasks;
 using CoreNFC;
 using NDEF.iOS.Enums;
+using NDEF.iOS.Serviices;
 using UIKit;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
+[assembly: Dependency(typeof(NativeNFCAdapterService))]
 namespace NDEF.iOS.Serviices
 {
     public class NativeNFCAdapterService

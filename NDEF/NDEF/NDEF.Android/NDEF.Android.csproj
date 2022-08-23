@@ -95,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NDEF\NDEF.csproj">
-      <Project>{F022873C-648C-4312-AAB6-B26B50FA556B}</Project>
+      <Project>{367DFC14-B698-4D14-B094-A71D18CB115A}</Project>
       <Name>NDEF</Name>
     </ProjectReference>
   </ItemGroup>

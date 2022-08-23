@@ -15,7 +15,10 @@ using NDEF.Droid.Enums;
 using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
+using Xamarin.Forms;
+using NDEF.Droid.Services;
 
+[assembly: Dependency(typeof(NativeNFCAdapterService))]
 namespace NDEF.Droid.Services
 {
     class NativeNFCAdapterService : INfcAdapter

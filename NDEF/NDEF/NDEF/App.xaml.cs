@@ -1,4 +1,5 @@
 ﻿using System;
+using NDEF.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,7 +10,7 @@ namespace NDEF
         public App()
         {
             InitializeComponent();
-            var navigation = new NavigationPage(new MainPage())
+            var navigation = new NavigationPage(new MainPage(new MainViewModel()))
             {
                 BarTextColor = Color.White,
                 BarBackgroundColor = Color.Blue,

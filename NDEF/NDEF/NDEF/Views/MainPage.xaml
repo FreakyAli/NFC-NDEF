@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<page:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Messenger" 
+             Title="Messenger"
+             xmlns:vm="clr-namespace:NDEF.ViewModels"
+             xmlns:page="clr-namespace:NDEF.Views"
+             x:DataType="vm:MainViewModel"
              x:Class="NDEF.MainPage">
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center">
@@ -10,17 +13,19 @@
                 Padding="1"
                 BackgroundColor="LightGray">
                 <Editor
+                    Text="{Binding StringData, Mode=TwoWay}"
                     AutoSize="TextChanges"
                     HeightRequest="250"
                     BackgroundColor="White"
-                    Placeholder="Write something you would like to share..."
+                    Placeholder="Write something you would like to share through ndef..."
                     MaxLength="250"/>
             </StackLayout>
             <Button Margin="15,0,15,0"
                     BackgroundColor="Blue"
                     TextColor="White"
+                    Command="{Binding StartNfcTransmissionCommand}"
                     Text="Send Text"/>
         </StackLayout>
     </ContentPage.Content>
-</ContentPage>
+</page:BaseContentPage>
 
