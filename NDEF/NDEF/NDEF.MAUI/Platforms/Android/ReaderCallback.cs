@@ -1,8 +1,6 @@
 ﻿using Android.Nfc;
-using NfcAdapter = Android.Nfc.NfcAdapter;
-using System.Threading.Tasks;
 
-namespace NDEF.Droid.Services
+namespace NDEF.MAUI
 {
     public class ReaderCallback : Java.Lang.Object, NfcAdapter.IReaderCallback
     {
@@ -12,7 +10,7 @@ namespace NDEF.Droid.Services
         {
             var isSuccess = NFCTag?.TrySetResult(tag);
             if (null == NFCTag || !isSuccess.Value)
-                NativeNFCAdapterService.DetectedTag = tag;
+              Platforms.NfcService.DetectedTag = tag;
         }
     }
 }
