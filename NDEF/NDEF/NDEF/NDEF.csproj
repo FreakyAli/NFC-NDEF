@@ -17,5 +17,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Xamarin.CommunityToolkit" />
+    <None Remove="Views\" />
+    <None Remove="ViewModels\" />
+    <None Remove="Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 </Project>
