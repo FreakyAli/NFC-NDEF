@@ -1,10 +1,8 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.Nfc;
-using Android.OS;
 using Android.Content;
-using Android.Util;
-
+using AndroidX.Core.Content;
 
 namespace NDEF.MAUI;
 
@@ -25,14 +23,23 @@ public class MainActivity : MauiAppCompatActivity
             NfcAdapter.ActionTechDiscovered.Equals(intent.Action) ||
             NfcAdapter.ActionNdefDiscovered.Equals(intent.Action))
         {
-            var tag = (Tag)intent.GetParcelableExtra(NfcAdapter.ExtraTag);
+            Tag tag;
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Tiramisu)
+            {
+                var cSharpType = typeof(Tag);
+                var javaType = Java.Lang.Class.FromType(cSharpType);
+                tag = (Tag)IntentCompat.GetParcelableExtra(intent,NfcAdapter.ExtraTag, javaType);
+            }
+            else
+            {
+                tag = (Tag)intent.GetParcelableExtra(NfcAdapter.ExtraTag);
+            }
             if (tag != null)
             {
                 var isSuccess = NfcTag?.TrySetResult(tag);
                 if (null == NfcTag || !isSuccess.Value) { }
-                NDEF.MAUI.Platforms.NfcService.DetectedTag = tag;
+                Platforms.NfcService.DetectedTag = tag;
             }
         }
     }
 }
-
