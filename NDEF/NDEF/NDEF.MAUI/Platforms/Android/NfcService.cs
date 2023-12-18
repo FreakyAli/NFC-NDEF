@@ -1,20 +1,17 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Nfc;
 using Android.Nfc.Tech;
 using Android.OS;
 using Application = Microsoft.Maui.Controls.Application;
 using NDEF.MAUI.Enums;
-using static Android.Nfc.NfcAdapter;
 using NDEF.MAUI.Interfaces;
 
 namespace NDEF.MAUI.Platforms
 {
     public class NfcService : INfcService
     {
-        private readonly MainActivity mainActivity = (MainActivity)Platform.CurrentActivity;
-        private Lazy<NfcAdapter> lazynfcAdapter = new Lazy<NfcAdapter>(() => NfcAdapter.GetDefaultAdapter(Platform.CurrentActivity));
+        private readonly Lazy<NfcAdapter> lazynfcAdapter = new(() => NfcAdapter.GetDefaultAdapter(Platform.CurrentActivity));
         private NfcAdapter NfcAdapter => lazynfcAdapter.Value;
         private PendingIntent pendingIntent;
         private IntentFilter[] writeTagFilters;
@@ -54,8 +51,17 @@ namespace NDEF.MAUI.Platforms
             ndefDiscovered.AddCategory(Intent.CategoryDefault);
             techDiscovered.AddCategory(Intent.CategoryDefault);
 
-            var intent = new Intent(mainActivity, mainActivity.Class).AddFlags(ActivityFlags.SingleTop);
-            pendingIntent = PendingIntent.GetActivity(mainActivity, 0, intent, 0);
+            var intent = new Intent(Platform.CurrentActivity, Platform.CurrentActivity.Class);
+            intent.AddFlags(ActivityFlags.SingleTop);
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.S)
+            {
+                pendingIntent = PendingIntent.GetActivity(Platform.CurrentActivity, 0, intent, PendingIntentFlags.Mutable | PendingIntentFlags.UpdateCurrent);
+            }
+            else
+            {
+                pendingIntent = PendingIntent.GetActivity(Platform.CurrentActivity, 0, intent, 0);
+            }
 
             techList = new string[][]
             {
@@ -134,9 +140,10 @@ namespace NDEF.MAUI.Platforms
 
         private async Task<Tag> GetDetectedTag()
         {
+            var mainActivity = Platform.CurrentActivity as MainActivity;
             mainActivity.NfcTag = new TaskCompletionSource<Tag>();
             readerCallback.NFCTag = new TaskCompletionSource<Tag>();
-            var tagDetectionTask = await Task.WhenAny(mainActivity.NfcTag.Task, readerCallback.NFCTag.Task);//.TimeoutAfter(TimeSpan.FromSeconds(60));
+            var tagDetectionTask = await Task.WhenAny(mainActivity.NfcTag.Task, readerCallback.NFCTag.Task);
             return await tagDetectionTask;
         }
 
@@ -165,7 +172,7 @@ namespace NDEF.MAUI.Platforms
                              new Intent(Android.Provider.Settings.ActionNfcSettings) :
                              new Intent(Android.Provider.Settings.ActionWirelessSettings);
 
-                mainActivity?.StartActivity(intent);
+                Platform.CurrentActivity?.StartActivity(intent);
             }
 
             return true;

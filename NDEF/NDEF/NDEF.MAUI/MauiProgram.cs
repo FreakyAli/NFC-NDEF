@@ -20,9 +20,6 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-#if ANDROID||iOS
-        builder.Services.AddTransient<Interfaces.INfcService, NfcService>();
-#endif
         builder.Services.AddTransient<MainViewModel>();
         return builder.Build();
     }

@@ -24,5 +24,4 @@ public partial class MainPage : BaseContentPage
         base.OnDisappearing();
         mainvm.ExecuteOnDisappearing();
     }
-    //SemanticScreenReader.Announce();
 }

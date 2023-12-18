@@ -13,7 +13,7 @@ namespace NDEF.MAUI.Interfaces
         }
 
         /// <summary>
-        /// Enable NFC search
+        /// Enable NFC search, always execute this on the main thread
         /// </summary>
         public void EnableForegroundDispatch()
         {
@@ -21,7 +21,7 @@ namespace NDEF.MAUI.Interfaces
         }
 
         /// <summary>
-        /// Disable NFC search
+        /// Disable NFC search, always execute this on the main thread
         /// </summary>
         public void DisableForegroundDispatch()
         {

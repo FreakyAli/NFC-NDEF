@@ -4,7 +4,7 @@
              xmlns:page="clr-namespace:NDEF.MAUI.Views"
              xmlns:vm="clr-namespace:NDEF.MAUI.ViewModels"
              x:DataType="vm:MainViewModel"
-             Title="Messenger"
+             BackgroundColor="White"
              x:Class="NDEF.MAUI.MainPage">
     <ContentPage.Content>
         <VerticalStackLayout VerticalOptions="Center">
@@ -13,6 +13,7 @@
                 Padding="1"
                 BackgroundColor="LightGray">
                 <Editor
+                    TextColor="Black"
                     AutoSize="TextChanges"
                     HeightRequest="250"
                     BackgroundColor="White"
@@ -20,6 +21,7 @@
                     MaxLength="250"/>
             </StackLayout>
             <Button Margin="15,0,15,0"
+                    Command="{Binding StartNfcTransmissionCommand}"
                     BackgroundColor="Blue"
                     TextColor="White"
                     Text="Send Text"/>

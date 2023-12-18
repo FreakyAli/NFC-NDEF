@@ -1,5 +1,4 @@
-﻿using System;
-using CoreNFC;
+﻿using CoreNFC;
 using NDEF.MAUI.Enums;
 using NDEF.MAUI.Interfaces;
 using UIKit;
