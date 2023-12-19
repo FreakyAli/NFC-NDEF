@@ -7,7 +7,7 @@ namespace NDEF.MAUI.Platforms
 {
     public class NfcService : INfcService
     {
-        public async Task SendAsync(byte[] bytes)
+        public async Task ReadAsync()
         {
             var isNfcAvailable = UIDevice.CurrentDevice.CheckSystemVersion(11, 0);
             if (isNfcAvailable && NFCNdefReaderSession.ReadingAvailable)
@@ -16,7 +16,7 @@ namespace NDEF.MAUI.Platforms
                 {
                     try
                     {
-                        var sessionDelegate = new SessionDelegate(bytes);
+                        var sessionDelegate = new SessionDelegate();
                         var session = new NFCNdefReaderSession(sessionDelegate, null, true);
                         session.BeginSession();
 

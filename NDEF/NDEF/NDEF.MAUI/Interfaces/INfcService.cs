@@ -41,7 +41,7 @@ namespace NDEF.MAUI.Interfaces
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public Task SendAsync(byte[] bytes);
+        public Task ReadAsync();
 
         /// <summary>
         /// Open NFC settings, This is only for Android.

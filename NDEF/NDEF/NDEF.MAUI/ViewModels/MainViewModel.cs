@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using NDEF.MAUI.Interfaces;
 using NDEF.MAUI.Platforms;
 
@@ -9,11 +8,18 @@ namespace NDEF.MAUI.ViewModels
     {
         private readonly INfcService nfcAdapter;
         private string stringData;
+        private bool showIndicator;
 
         public string StringData
         {
             get => stringData;
             set => SetProperty(ref stringData, value);
+        }
+
+        public bool ShowIndicator
+        {
+            get => showIndicator;
+            set => SetProperty(ref showIndicator, value);
         }
 
         public ICommand StartNfcTransmissionCommand { get; set; }
@@ -28,13 +34,12 @@ namespace NDEF.MAUI.ViewModels
         public override void ExecuteOnAppearing()
         {
             base.ExecuteOnAppearing();
-            MainThread.InvokeOnMainThreadAsync(async() =>
+            MainThread.InvokeOnMainThreadAsync(async () =>
             {
                 if (await nfcAdapter.OpenNFCSettingsAsync())
                 {
                     nfcAdapter.ConfigureNfcAdapter();
                     nfcAdapter.EnableForegroundDispatch();
-                    //var tag = nfcAdapter.
                 }
             });
         }
@@ -46,12 +51,12 @@ namespace NDEF.MAUI.ViewModels
             nfcAdapter.UnconfigureNfcAdapter();
         }
 
-        private Task ExecuteNfc()
+        private async Task ExecuteNfc()
         {
-            byte[] bytes = Encoding.ASCII.GetBytes(stringData);
-            return nfcAdapter.SendAsync(bytes);
+            ShowIndicator = true;
+            await nfcAdapter.ReadAsync();
+            ShowIndicator = false;
         }
 
     }
 }
-

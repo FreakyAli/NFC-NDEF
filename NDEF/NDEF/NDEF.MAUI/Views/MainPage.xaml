@@ -10,21 +10,17 @@
         <VerticalStackLayout VerticalOptions="Center">
             <StackLayout
                 Margin="10"
-                Padding="1"
-                BackgroundColor="LightGray">
-                <Editor
-                    TextColor="Black"
-                    AutoSize="TextChanges"
-                    HeightRequest="250"
-                    BackgroundColor="White"
-                    Placeholder="Write something you would like to share..."
-                    MaxLength="250"/>
+                Padding="1">
+               <ActivityIndicator
+                   Color="Blue"
+                   IsRunning="{Binding ShowIndicator}"
+                   IsVisible="{Binding ShowIndicator}"/>
             </StackLayout>
             <Button Margin="15,0,15,0"
                     Command="{Binding StartNfcTransmissionCommand}"
                     BackgroundColor="Blue"
                     TextColor="White"
-                    Text="Send Text"/>
+                    Text="Read"/>
         </VerticalStackLayout>
     </ContentPage.Content>
 </page:BaseContentPage>

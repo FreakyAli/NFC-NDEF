@@ -5,6 +5,7 @@ using Android.Nfc.Tech;
 using Android.OS;
 using Application = Microsoft.Maui.Controls.Application;
 using NDEF.MAUI.Enums;
+using Debug = System.Diagnostics.Debug;
 using NDEF.MAUI.Interfaces;
 
 namespace NDEF.MAUI.Platforms
@@ -95,7 +96,7 @@ namespace NDEF.MAUI.Platforms
             Platform.ActivityStateChanged -= Platform_ActivityStateChanged;
         }
 
-        public async Task SendAsync(byte[] bytes)
+        public async Task ReadAsync()
         {
             Ndef ndef = null;
             try
@@ -118,7 +119,8 @@ namespace NDEF.MAUI.Platforms
                     await ndef.ConnectAsync();
                 }
 
-                await WriteToTag(ndef, bytes);
+                // this is where you get your data 
+                Debug.WriteLine(ndef.NdefMessage);
             }
             catch (IOException)
             {
@@ -147,15 +149,6 @@ namespace NDEF.MAUI.Platforms
             return await tagDetectionTask;
         }
 
-        private async Task WriteToTag(Ndef ndef, byte[] chunkedBytes)
-        {
-            var ndefRecord = new NdefRecord(NdefRecord.TnfWellKnown, NdefRecord.RtdText?.ToArray(), Array.Empty<byte>(), chunkedBytes);
-            NdefRecord[] records = { ndefRecord };
-            NdefMessage message = new NdefMessage(records);
-            ndef.WriteNdefMessage(message);
-            await Application.Current.MainPage.DisplayAlert("NFC", "Write Successful", "Ok");
-        }
-
         public async Task<bool> OpenNFCSettingsAsync()
         {
             if (NfcStatus == NfcStatus.Unavailable)
@@ -174,9 +167,7 @@ namespace NDEF.MAUI.Platforms
 
                 Platform.CurrentActivity?.StartActivity(intent);
             }
-
             return true;
-
         }
     }
 }

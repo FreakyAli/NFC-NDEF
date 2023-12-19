@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text;
 using CoreNFC;
 using Foundation;
@@ -9,12 +10,10 @@ namespace NDEF.MAUI
 {
     public class SessionDelegate : NFCNdefReaderSessionDelegate
     {
-        private readonly byte[] bytes;
         public TaskCompletionSource<NfcTransmissionStatus> WasDataTransmitted { get; set; }
 
-        public SessionDelegate(byte[] bytes)
+        public SessionDelegate()
         {
-            this.bytes = bytes;
             WasDataTransmitted = new TaskCompletionSource<NfcTransmissionStatus>();
         }
 
@@ -72,23 +71,9 @@ namespace NDEF.MAUI
                                 var isNfcWriteAvailable = UIDevice.CurrentDevice.CheckSystemVersion(13, 0);
                                 if (isNfcWriteAvailable)
                                 {
-                                    var chunkString = Encoding.UTF8.GetString(bytes);
-                                    var textPayload = NFCNdefPayload.CreateWellKnownTypePayload(chunkString);
-                                    var ndefpayloadArray = new NFCNdefPayload[] { textPayload };
-                                    var ndefMessage = new NFCNdefMessage(ndefpayloadArray);
-                                    NdefTag.WriteNdef(ndefMessage, (tagError) =>
-                                    {
-                                        if (tagError != null)
-                                        {
-                                            WasDataTransmitted.TrySetResult(NfcTransmissionStatus.Failed);
-                                            session.InvalidateSession("Falied to write this message");
-                                        }
-                                        else
-                                        {
-                                            session.AlertMessage = "Write successful";
-                                            session.InvalidateSession();
-                                            WasDataTransmitted.TrySetResult(NfcTransmissionStatus.Success);
-                                        }
+                                    NdefTag.ReadNdef((message, error) => {
+                                        // This is where you get the Data
+                                        Debug.WriteLine(message);
                                     });
                                 }
                                 else
