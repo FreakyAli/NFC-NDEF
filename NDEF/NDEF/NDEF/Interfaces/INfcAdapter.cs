@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace NDEF.Interfaces
 {
@@ -12,11 +10,10 @@ namespace NDEF.Interfaces
 
         void DisableForegroundDispatch();
 
-        Task SendAsync(byte[] bytes);
+        Task ReadAsync();
 
         Task<bool> OpenNFCSettingsAsync();
 
         void UnconfigureNfcAdapter();
     }
 }
-

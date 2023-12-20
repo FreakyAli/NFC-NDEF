@@ -1,6 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CoreNFC;
+using NDEF.Interfaces;
 using NDEF.iOS.Enums;
 using NDEF.iOS.Services;
 using UIKit;
@@ -10,7 +10,7 @@ using Xamarin.Forms;
 [assembly: Dependency(typeof(NativeNFCAdapterService))]
 namespace NDEF.iOS.Services
 {
-    public class NativeNFCAdapterService
+    public class NativeNFCAdapterService : INfcAdapter
     {
         public NativeNFCAdapterService()
         {
@@ -39,7 +39,7 @@ namespace NDEF.iOS.Services
 
         #endregion
 
-        public async Task SendAsync(byte[] bytes)
+        public async Task ReadAsync()
         {
             var isNfcAvailable = UIDevice.CurrentDevice.CheckSystemVersion(11, 0);
             if (isNfcAvailable && NFCNdefReaderSession.ReadingAvailable)
@@ -48,7 +48,7 @@ namespace NDEF.iOS.Services
                 {
                     try
                     {
-                        var sessionDelegate = new SessionDelegate(bytes);
+                        var sessionDelegate = new SessionDelegate();
                         var session = new NFCNdefReaderSession(sessionDelegate, null, true);
                         session.BeginSession();
 

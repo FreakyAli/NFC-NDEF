@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,12 +13,10 @@ namespace NDEF.iOS.Services
 {
     public class SessionDelegate : NFCNdefReaderSessionDelegate
     {
-        private readonly byte[] bytes;
         public TaskCompletionSource<NfcTransmissionStatus> WasDataTransmitted { get; set; }
 
-        public SessionDelegate(byte[] bytes)
+        public SessionDelegate()
         {
-            this.bytes = bytes;
             WasDataTransmitted = new TaskCompletionSource<NfcTransmissionStatus>();
         }
 
@@ -75,23 +74,9 @@ namespace NDEF.iOS.Services
                                 var isNfcWriteAvailable = UIDevice.CurrentDevice.CheckSystemVersion(13, 0);
                                 if (isNfcWriteAvailable)
                                 {
-                                    var chunkString = Encoding.UTF8.GetString(bytes);
-                                    var textPayload = NFCNdefPayload.CreateWellKnownTypePayload(chunkString);
-                                    var ndefpayloadArray = new NFCNdefPayload[] { textPayload };
-                                    var ndefMessage = new NFCNdefMessage(ndefpayloadArray);
-                                    NdefTag.WriteNdef(ndefMessage, (tagError) =>
-                                    {
-                                        if (tagError != null)
-                                        {
-                                            WasDataTransmitted.TrySetResult(NfcTransmissionStatus.Failed);
-                                            session.InvalidateSession("Falied to write this message");
-                                        }
-                                        else
-                                        {
-                                            session.AlertMessage = "Write successful";
-                                            session.InvalidateSession();
-                                            WasDataTransmitted.TrySetResult(NfcTransmissionStatus.Success);
-                                        }
+                                    NdefTag.ReadNdef((ndefMessage, err) => {
+                                        //This is where you will get your data
+                                        Debug.WriteLine(ndefMessage);
                                     });
                                 }
                                 else
@@ -129,4 +114,3 @@ namespace NDEF.iOS.Services
     }
 
 }
-

@@ -14,11 +14,18 @@ namespace NDEF.ViewModels
     {
         private readonly INfcAdapter nfcAdapter;
         private string stringData;
+        private bool showIndicator;
 
         public string StringData
         {
             get => stringData;
             set => SetProperty(ref stringData, value);
+        }
+
+        public bool ShowIndicator
+        {
+            get => showIndicator;
+            set => SetProperty(ref showIndicator, value);
         }
 
         public ICommand StartNfcTransmissionCommand { get; set; }
@@ -30,14 +37,17 @@ namespace NDEF.ViewModels
             stringData = string.Empty;
         }
 
-        public async override void ExecuteOnAppearing()
+        public override void ExecuteOnAppearing()
         {
             base.ExecuteOnAppearing();
-            if (await nfcAdapter.OpenNFCSettingsAsync())
+            MainThread.InvokeOnMainThreadAsync(async () =>
             {
-                nfcAdapter.ConfigureNfcAdapter();
-                nfcAdapter.EnableForegroundDispatch();
-            }
+                if (await nfcAdapter.OpenNFCSettingsAsync())
+                {
+                    nfcAdapter.ConfigureNfcAdapter();
+                    nfcAdapter.EnableForegroundDispatch();
+                }
+            });
         }
 
         public override void ExecuteOnDisappearing()
@@ -47,12 +57,11 @@ namespace NDEF.ViewModels
             nfcAdapter.UnconfigureNfcAdapter();
         }
 
-        private Task ExecuteNfc()
+        private async Task ExecuteNfc()
         {
-            byte[] bytes = Encoding.ASCII.GetBytes(stringData);
-            return nfcAdapter.SendAsync(bytes);
+            ShowIndicator = true;
+            await nfcAdapter.ReadAsync();
+            ShowIndicator = false;
         }
-
     }
 }
-

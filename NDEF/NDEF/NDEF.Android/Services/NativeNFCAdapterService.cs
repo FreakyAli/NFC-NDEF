@@ -11,9 +11,9 @@ using Xamarin.Essentials;
 using NDEF.Droid.Enums;
 using System.Threading.Tasks;
 using System.IO;
-using System.Linq;
 using Xamarin.Forms;
 using NDEF.Droid.Services;
+using Debug = System.Diagnostics.Debug;
 
 [assembly: Dependency(typeof(NativeNFCAdapterService))]
 namespace NDEF.Droid.Services
@@ -62,7 +62,15 @@ namespace NDEF.Droid.Services
             techDiscovered.AddCategory(Intent.CategoryDefault);
 
             var intent = new Intent(mainActivity, mainActivity.Class).AddFlags(ActivityFlags.SingleTop);
-            pendingIntent = PendingIntent.GetActivity(mainActivity, 0, intent, 0);
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.S)
+            {
+                pendingIntent = PendingIntent.GetActivity(Platform.CurrentActivity, 0, intent, PendingIntentFlags.Mutable | PendingIntentFlags.UpdateCurrent);
+            }
+            else
+            {
+                pendingIntent = PendingIntent.GetActivity(Platform.CurrentActivity, 0, intent, 0);
+            }
 
             techList = new string[][]
             {
@@ -87,6 +95,10 @@ namespace NDEF.Droid.Services
 
         public void EnableForegroundDispatch()
         {
+            if(pendingIntent== null ||writeTagFilters == null || techList==null || readerCallback== null)
+            {
+                return;
+            }
             NfcAdapter?.EnableForegroundDispatch(Platform.CurrentActivity, pendingIntent, writeTagFilters, techList); //Foreground dispatch API enabled
             NfcAdapter?.EnableReaderMode(Platform.CurrentActivity, readerCallback, NfcReaderFlags.NfcA, null); //Reader mode API enabled
         }
@@ -96,7 +108,7 @@ namespace NDEF.Droid.Services
             Platform.ActivityStateChanged -= Platform_ActivityStateChanged;
         }
 
-        public async Task SendAsync(byte[] bytes)
+        public async Task ReadAsync()
         {
             Ndef ndef = null;
             try
@@ -119,7 +131,8 @@ namespace NDEF.Droid.Services
                     await ndef.ConnectAsync();
                 }
 
-                await WriteToTag(ndef, bytes);
+                // this is where you get your data 
+                Debug.WriteLine(ndef.NdefMessage);
             }
             catch (IOException)
             {
@@ -143,41 +156,26 @@ namespace NDEF.Droid.Services
         {
             mainActivity.NfcTag = new TaskCompletionSource<Tag>();
             readerCallback.NFCTag = new TaskCompletionSource<Tag>();
-            var tagDetectionTask = await Task.WhenAny(mainActivity.NfcTag.Task, readerCallback.NFCTag.Task);//.TimeoutAfter(TimeSpan.FromSeconds(60));
+            var tagDetectionTask = await Task.WhenAny(mainActivity.NfcTag.Task, readerCallback.NFCTag.Task);
             return await tagDetectionTask;
         }
 
-        private async Task WriteToTag(Ndef ndef, byte[] chunkedBytes)
-        {
-            var ndefRecord = new NdefRecord(NdefRecord.TnfWellKnown, NdefRecord.RtdText?.ToArray(), Array.Empty<byte>(), chunkedBytes);
-            NdefRecord[] records = { ndefRecord };
-            NdefMessage message = new NdefMessage(records);
-            ndef.WriteNdefMessage(message);
-            await Application.Current.MainPage.DisplayAlert("NFC", "Write Successful", "Ok");
-        }
-
-        public async Task<bool> OpenNFCSettingsAsync()
+        public Task<bool> OpenNFCSettingsAsync()
         {
             if (NfcStatus == NfcStatus.Unavailable)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "NFC is not supported", "Ok");
-                return false;
+                return Task.FromResult(false);
             }
 
             if (NfcStatus == NfcStatus.Disabled)
             {
-                await Application.Current.MainPage.DisplayAlert("Disabled", "NFC is disabled", "Ok");
-
                 var intent = Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean ?
                              new Intent(Android.Provider.Settings.ActionNfcSettings) :
                              new Intent(Android.Provider.Settings.ActionWirelessSettings);
 
                 mainActivity?.StartActivity(intent);
             }
-
-            return true;
-
+            return Task.FromResult(true);
         }
     }
 }
-
