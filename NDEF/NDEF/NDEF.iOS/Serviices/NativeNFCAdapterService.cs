@@ -72,6 +72,19 @@ namespace NDEF.iOS.Services
         }
 
         public Task<bool> OpenNFCSettingsAsync() => Task.FromResult(true);
+
+        public Task<bool> GetCurrentStatusAsync()
+        {
+            bool status = false;
+            if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
+            {
+                if (NFCNdefReaderSession.ReadingAvailable)
+                {
+                    status = true;
+                }
+            }
+            return Task.FromResult(status);
+        }
     }
 }
 

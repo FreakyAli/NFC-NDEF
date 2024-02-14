@@ -15,5 +15,7 @@ namespace NDEF.Interfaces
         Task<bool> OpenNFCSettingsAsync();
 
         void UnconfigureNfcAdapter();
+
+        Task<bool> GetCurrentStatusAsync();
     }
 }

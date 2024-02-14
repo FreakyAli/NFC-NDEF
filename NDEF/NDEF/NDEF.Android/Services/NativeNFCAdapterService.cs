@@ -177,5 +177,20 @@ namespace NDEF.Droid.Services
             }
             return Task.FromResult(true);
         }
+
+        public Task<bool> GetCurrentStatusAsync()
+        {
+            var status = false;
+
+            if (NfcAdapter != null)
+            {
+                if (NfcAdapter.IsEnabled)
+                {
+                    status = true;
+                }
+            }
+
+            return Task.FromResult(status);
+        }
     }
 }
